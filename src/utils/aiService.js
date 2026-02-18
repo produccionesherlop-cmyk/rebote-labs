@@ -38,50 +38,33 @@ const fetchDeepSeek = async (prompt, systemPrompt = "Eres un productor cinematog
 
 // --- SOPORTE AL ECOSISTEMA REBOTE ---
 
-/**
- * Génesis Narrativa: Generación de Loglines
- */
 export const generateLogline = async (idea) => {
-    const systemPrompt = `Actúa como IA7, Auditor Forense Audiovisual. 
-    Tu objetivo es generar una 'Verdad Extática' (Logline). 
-    Enfoque: Soberanía Narrativa y Cine Comunitario. 
-    Resumen de 1 o 2 frases con rigor cinematográfico de nivel licenciatura.`;
-
-    try {
-        return await fetchDeepSeek(`Genera un logline para esta idea: "${idea}"`, systemPrompt);
-    } catch (e) {
-        return "Error en el motor DeepSeek. Verifica conexión.";
-    }
+    const systemPrompt = `Actúa como IA7, Auditor Forense Audiovisual. Genera un logline (Verdad Extática). 
+    Enfoque: Soberanía Narrativa. Resumen de 1-2 frases con rigor cinematográfico profesional.`;
+    return await fetchDeepSeek(`Genera un logline para esta idea: "${idea}"`, systemPrompt);
 };
 
-/**
- * Ingeniería de Cine: Estructura y Presupuesto
- */
 export const generateBudget = async (projectDetails) => {
-    const systemPrompt = `Actúa como IA7, Estratega de Producción Comunitaria. 
-    Calcula un presupuesto aproximado bajo estándares de 'Producción de Combate'. 
-    Usa la lógica de optimización de recursos del Taller de Cine con Dispositivos Móviles.
-    Entrega: Costo Bajo, Costo Alto y 3 rubros clave.`;
+    const systemPrompt = `Actúa como IA7, Estratega de Producción. Calcula un presupuesto de 'Producción de Combate'. 
+    Optimización de recursos móviles. Entrega: Costo Bajo, Costo Alto y 3 rubros clave.`;
+    return await fetchDeepSeek(`Genera presupuesto para: "${projectDetails}"`, systemPrompt);
+};
 
-    try {
-        return await fetchDeepSeek(`Genera presupuesto para: "${projectDetails}"`, systemPrompt);
-    } catch (e) {
-        return "Error calculando presupuesto con DeepSeek.";
-    }
+export const askCátedra = async (question) => {
+    const systemPrompt = `Eres IA7, Tutor Maestro de Rebote Labs. Respondes sobre Lenguaje Audiovisual, 
+    Técnica Forense, Audio de Resistencia y Ética. Tono académico y empoderador.`;
+    return await fetchDeepSeek(question, systemPrompt);
 };
 
 /**
- * Consultoría de Cátedra: Preguntas sobre técnica/teoría
+ * NUEVO: Sinfonía Visual (Asistente de Post-Producción)
  */
-export const askCátedra = async (question) => {
-    const systemPrompt = `Eres IA7, el Tutor Maestro de Rebote Labs. 
-    Respondes sobre Lenguaje Audiovisual, Técnica Forense (Bloqueo AE/AF), 
-    Audio de Resistencia (Room Tone) y Ética de DDHH en el cine. 
-    Tu tono es académico, militante y empoderador.`;
-
-    try {
-        return await fetchDeepSeek(question, systemPrompt);
-    } catch (e) {
-        return "Error consultando a la Cátedra.";
-    }
+export const assistPostProd = async (projectDescription) => {
+    const systemPrompt = `Actúa como IA7, Especialista en Montaje Estructural. 
+    Analiza la idea del usuario y da consejos de edición:
+    1. Ritmo sugerido.
+    2. Uso de Room Tone.
+    3. Técnica de color forense.
+    4. Estilo de corte (CSI-Style).`;
+    return await fetchDeepSeek(`Aconséjame en la post-producción de este proyecto: "${projectDescription}"`, systemPrompt);
 };

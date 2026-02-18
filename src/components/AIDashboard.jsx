@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { generateLogline, generateBudget, askCátedra } from '../utils/aiService'
+import { generateLogline, generateBudget, askCátedra, assistPostProd } from '../utils/aiService'
 import toast from 'react-hot-toast'
 
 export function AIDashboard({ onLogout }) {
@@ -18,13 +18,13 @@ export function AIDashboard({ onLogout }) {
                 output = await generateLogline(idea)
             } else if (mode === 'ingenieria') {
                 output = await generateBudget(idea)
+            } else if (mode === 'sinfonia') {
+                output = await assistPostProd(idea)
             } else if (mode === 'catedra') {
                 output = await askCátedra(idea)
-            } else {
-                output = "El laboratorio de Sinfonía Visual (Post-Pro) está optimizando su renderizado forense..."
             }
         } catch (e) {
-            output = "Error en el motor DeepSeek. Verifica el API Key o tu conexión."
+            output = "Error en el motor DeepSeek. Verifica el API Key en tu .env o la conexión."
             toast.error("Falla en la red IA")
         }
 
@@ -38,7 +38,7 @@ export function AIDashboard({ onLogout }) {
                 <div className="header-info">
                     <h2 className="dashboard-title">Estudio Maestro Rebote</h2>
                     <div className="status-indicator">
-                        <span className="dot pulse"></span> Motor: DeepSeek Optimizao
+                        <span className="dot pulse"></span> Motor: DeepSeek Optimizao (v5)
                     </div>
                 </div>
                 <button className="btn-logout-minimal" onClick={onLogout}>Cerrar Cámara</button>
@@ -72,7 +72,7 @@ export function AIDashboard({ onLogout }) {
                     <span className="nav-icon">🎬</span>
                     <div className="nav-text">
                         <strong>Sinfonía Visual</strong>
-                        <small>Protocolo CapCut/VN</small>
+                        <small>Asistente de Montaje</small>
                     </div>
                 </button>
                 <button
@@ -82,7 +82,7 @@ export function AIDashboard({ onLogout }) {
                     <span className="nav-icon">📖</span>
                     <div className="nav-text">
                         <strong>Cátedra de Maestros</strong>
-                        <small>Consultoría IA7</small>
+                        <small>Consultoría Técnica</small>
                     </div>
                 </button>
             </nav>
@@ -92,13 +92,15 @@ export function AIDashboard({ onLogout }) {
                     <div className="workspace-label">
                         {mode === 'genesis' ? 'Módulo: Construcción de Premisas Soberanas' :
                             mode === 'ingenieria' ? 'Módulo: Peritaje de Recursos y Costos' :
-                                mode === 'sinfonia' ? 'Módulo: Flujo de Trabajo y Montaje Estructural' :
+                                mode === 'sinfonia' ? 'Módulo: Sinfonía Visual y Montaje Estructural' :
                                     'Consultorio IA7: Preguntas de Técnica y Teoría'}
                     </div>
 
                     <textarea
                         className="workspace-input"
-                        placeholder={mode === 'catedra' ? "Pregunta sobre Room Tone, AE/AF Lock, Ética..." : "Describe la esencia de tu proyecto..."}
+                        placeholder={mode === 'catedra' ? "Pregunta sobre Room Tone, AE/AF Lock, Ética..." :
+                            mode === 'sinfonia' ? "Describe tu material grabado para recibir consejos de edición..." :
+                                "Describe la esencia de tu proyecto..."}
                         value={idea}
                         onChange={(e) => setIdea(e.target.value)}
                     />
@@ -106,14 +108,14 @@ export function AIDashboard({ onLogout }) {
                     <button
                         className="btn-action-primary"
                         onClick={handleGenerate}
-                        disabled={loading || (!idea && mode !== 'sinfonia')}
+                        disabled={loading || !idea}
                     >
                         {loading ? 'Invocando conocimiento con DeepSeek...' : 'Activar Inteligencia Artística'}
                     </button>
 
                     {result && (
                         <div className="result-panel fade-in-up">
-                            <div className="result-header">Dictamen de IA7 (Motor DeepSeek):</div>
+                            <div className="result-header">Dictamen de IA7 (DeepSeek Chat):</div>
                             <div className="result-body">{result}</div>
                         </div>
                     )}
@@ -123,7 +125,7 @@ export function AIDashboard({ onLogout }) {
                             <h3>Protocolo CSI: Montaje Estructural</h3>
                             <ul>
                                 <li><strong>Ingesta:</strong> Solo material con 'Verdad Extática'.</li>
-                                <li><strong>Assembly:</strong> 60 min para estructura base, no pulido.</li>
+                                <li><strong>Assembly:</strong> 60 min para estructura base.</li>
                                 <li><strong>Audio:</strong> Sincronización vía claqueta sonar.</li>
                             </ul>
                         </div>
