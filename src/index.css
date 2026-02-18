@@ -30,6 +30,12 @@ body {
   flex-direction: column;
 }
 
+.app-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 /* --- HEADER PRINCIPAL --- */
 .main-header {
   padding: 3rem 1.5rem 2rem;
