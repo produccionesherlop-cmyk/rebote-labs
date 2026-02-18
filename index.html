@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+  <!-- Optimizacion para dispositivos moviles (iOS/Android) -->
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#020617" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <meta name="description"
+    content="Rebote Labs - Ecosistema Audiovisual Pro. Inspirado en 'Rebote en San José'. Formación y producción cinematográfica comunitaria." />
+
+  <!-- Open Graph / Redes Sociales (Empoderamiento Visual) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Rebote Labs | Soberanía Audiovisual" />
+  <meta property="og:description"
+    content="Únete al ecosistema de cine comunitario. Herramientas técnicas y teóricas para la transformación social." />
+  <meta property="og:image" content="/pwa-512x512.svg" />
+
+  <!-- Fuentes Premium -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+
+  <title>REBOTE LABS | Ecosistema Audiovisual</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <noscript>Necesitas activar JavaScript para entrar al estudio.</noscript>
+  <script type="module" src="/src/main.jsx"></script>
+
+  <!-- Refuerzo de instalacion PWA -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js', { scope: '/' });
+      });
+    }
+  </script>
+</body>
+
+</html>

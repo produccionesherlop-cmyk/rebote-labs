@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de QR - Rebote Labs</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020617;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: rgba(30, 41, 59, 0.5);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            margin-bottom: 1rem;
+            color: #ea580c;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: white;
+        }
+
+        #qrcode {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 0 auto;
+            width: fit-content;
+        }
+
+        .btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Generador QR Rebote</h1>
+        <p>Pega aquí tu enlace de Netlify:</p>
+        <input type="text" id="urlInput" placeholder="https://rebote-labs-xxxx.netlify.app"
+            value="https://rebote-labs.netlify.app">
+        <button class="btn" onclick="generateQR()">Generar QR</button>
+
+        <div style="margin-top: 20px;">
+            <div id="qrcode"></div>
+        </div>
+        <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 1rem;">Haz captura de pantalla o clic derecho > Guardar
+            imagen</p>
+    </div>
+
+    <script>
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+            width: 200,
+            height: 200,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        function generateQR() {
+            var url = document.getElementById("urlInput").value;
+            if (!url) return alert("Por favor ingresa una URL");
+            qrcode.clear();
+            qrcode.makeCode(url);
+        }
+
+        // Generate default on load
+        generateQR();
+    </script>
+
+</body>
+
+</html>
