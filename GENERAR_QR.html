@@ -4,107 +4,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de QR - Rebote Labs</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <title>REBOTE LABS | Generador de Acceso Maestro</title>
+    <!-- Usamos una libreria mas moderna y compatible -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <style>
+        :root {
+            --bg: #020617;
+            --accent: #ea580c;
+            --text: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #020617;
-            color: white;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', system-ui, sans-serif;
+            margin: 0;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
+            min-height: 100vh;
+            padding: 20px;
         }
 
-        .container {
-            background: rgba(30, 41, 59, 0.5);
-            padding: 2rem;
-            border-radius: 20px;
-            text-align: center;
+        .card {
+            background: var(--glass);
+            padding: 40px;
+            border-radius: 40px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            max-width: 400px;
+            max-width: 500px;
             width: 100%;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
         }
 
-        h1 {
-            margin-bottom: 1rem;
-            color: #ea580c;
+        .logo {
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 10px;
+            margin: 0;
+            text-indent: 10px;
+        }
+
+        .logo span {
+            color: var(--accent);
+            letter-spacing: 5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        #canvas-container {
+            background: white;
+            padding: 30px;
+            border-radius: 30px;
+            display: inline-block;
+            margin: 30px 0;
+            box-shadow: 0 0 40px rgba(234, 88, 12, 0.2);
+        }
+
+        canvas {
+            display: block;
+            width: 240px !important;
+            height: 240px !important;
         }
 
         input {
-            width: 90%;
-            padding: 10px;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1rem;
             margin-bottom: 20px;
-            border-radius: 5px;
-            border: 1px solid #334155;
-            background: #0f172a;
-            color: white;
         }
 
-        #qrcode {
+        button {
             background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 0 auto;
-            width: fit-content;
-        }
-
-        .btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #3b82f6;
-            color: white;
+            color: black;
             border: none;
-            border-radius: 5px;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 900;
             cursor: pointer;
-            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
         }
 
-        .btn:hover {
-            background: #2563eb;
+        button:hover {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .help {
+            margin-top: 30px;
+            font-size: 0.85rem;
+            opacity: 0.6;
+            line-height: 1.6;
+        }
+
+        .link-direct {
+            color: var(--accent);
+            text-decoration: none;
+            display: block;
+            margin-top: 10px;
+            font-weight: 700;
         }
     </style>
 </head>
 
 <body>
-
-    <div class="container">
-        <h1>Generador QR Rebote</h1>
-        <p>Pega aquí tu enlace de Netlify:</p>
-        <input type="text" id="urlInput" placeholder="https://rebote-labs-xxxx.netlify.app"
-            value="https://rebote-labs.netlify.app">
-        <button class="btn" onclick="generateQR()">Generar QR</button>
-
-        <div style="margin-top: 20px;">
-            <div id="qrcode"></div>
+    <div class="card">
+        <div class="logo">
+            <h1>REBOTE</h1>
+            <span>LABS • ECOSISTEMA</span>
         </div>
-        <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 1rem;">Haz captura de pantalla o clic derecho > Guardar
-            imagen</p>
+
+        <div id="canvas-container">
+            <canvas id="qrcode-canvas"></canvas>
+        </div>
+
+        <div class="controls">
+            <input type="text" id="url" placeholder="URL de la App" value="https://rebote-labs.pages.dev">
+            <button onclick="updateQR()">Generar Nuevo Acceso</button>
+            <a id="download" href="#" class="link-direct" style="display:none">Descargar imagen QR</a>
+        </div>
+
+        <div class="help">
+            Escanea este código con tu iPhone o Android.<br>
+            <strong>iOS:</strong> Añadir a pantalla de inicio.<br>
+            <strong>Android:</strong> Instalar aplicación.
+        </div>
     </div>
 
     <script>
-        var qrcode = new QRCode(document.getElementById("qrcode"), {
-            width: 200,
-            height: 200,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
-        });
+        const canvas = document.getElementById('qrcode-canvas');
+        const urlInput = document.getElementById('url');
 
-        function generateQR() {
-            var url = document.getElementById("urlInput").value;
-            if (!url) return alert("Por favor ingresa una URL");
-            qrcode.clear();
-            qrcode.makeCode(url);
+        function updateQR() {
+            const url = urlInput.value || 'https://rebote-labs.pages.dev';
+            QRCode.toCanvas(canvas, url, {
+                width: 240,
+                margin: 0,
+                color: {
+                    dark: '#020617',
+                    light: '#ffffff'
+                }
+            }, function (error) {
+                if (error) console.error(error);
+                console.log('QR Generado!');
+            });
         }
 
-        // Generate default on load
-        generateQR();
+        // Generar inicial
+        setTimeout(updateQR, 500);
     </script>
-
 </body>
 
 </html>

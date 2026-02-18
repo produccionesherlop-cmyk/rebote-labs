@@ -8,6 +8,7 @@ import { AccessCode } from './components/AccessCode'
 import { AIDashboard } from './components/AIDashboard'
 import { DocumentarySheet } from './components/DocumentarySheet'
 import { MasterStructure } from './components/MasterStructure'
+import { WelcomeModal } from './components/WelcomeModal'
 import { Toaster } from 'react-hot-toast'
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
   return (
     <div className="app-container">
       <Toaster position="top-center" />
+      <WelcomeModal />
       <Header />
 
       <main className="main-content">

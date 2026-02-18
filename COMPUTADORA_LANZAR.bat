@@ -1,46 +1,32 @@
 @echo off
 setlocal
-title Rebote Labs - Centro de Control
-color 0b
+title REBOTE LABS - Control de Lanzamiento
+color 0B
 
 echo ============================================================
-echo           REBOTE LABS - ENGINE DE PRODUCCION
+echo           REBOTE LABS - ECOSISTEMA AUDIOVISUAL
 echo ============================================================
 echo.
+echo [1] Verificando entorno...
 
-node -v >nul 2>&1
+where node >nul 2>nul
 if %errorlevel% neq 0 (
-    echo [ERROR] No se encontro Node.js instalado. 
-    echo Por favor instala Node.js desde https://nodejs.org/ para correr la App.
+    echo [ERROR] No se encontro Node.js. Por favor instalalo en: https://nodejs.org
     pause
-    exit /b
+    exit
 )
 
-echo [1/3] Verificando archivos del sistema...
-if not exist node_modules (
-    echo [INFO] Primera vez detectada. Instalando componentes...
-    call npm install
-)
+echo [2] Instalando dependencias necesarias (Solo si faltan)...
+call npm install --no-fund --no-audit
 
+echo [3] Iniciando Laboratorio Local...
 echo.
-echo [2/3] Preparando entorno cinematografico...
+echo La aplicacion se abrira en tu navegador automaticamente.
+echo Si no abre, ve a: http://localhost:5173
 echo.
-echo ------------------------------------------------------------
-echo    EL ESTUDIO SE ABRIRA EN: http://localhost:5173
-echo ------------------------------------------------------------
-echo.
+echo ============================================================
 
-:: Abrir navegador despues de 3 segundos
-start /b "" cmd /c "timeout /t 3 >nul && start http://localhost:5173"
-
-echo [3/3] Lanzando Rebote Labs...
-call npm run dev
-
-if %errorlevel% neq 0 (
-    echo.
-    echo [!] Hubo un problema al iniciar la App.
-    echo Intentando comando alternativo...
-    npx vite
-)
+start http://localhost:5173
+npm run dev
 
 pause
