@@ -24,8 +24,8 @@ export function AIDashboard({ onLogout }) {
                 output = await askCátedra(idea)
             }
         } catch (e) {
-            output = "Error en el motor DeepSeek. Verifica el API Key en tu .env o la conexión."
-            toast.error("Falla en la red IA")
+            output = "Se produjo un error al intentar contactar con el motor IA. Revisa tu conexión a internet.";
+            toast.error("Falla en la red IA");
         }
 
         setResult(output)

@@ -1,14 +1,21 @@
 /**
- * AI SERVICE - REBOTE LABS (V5 PRO)
- * Integración de DeepSeek como motor principal para el Ecosistema Audiovisual.
+ * AI SERVICE - REBOTE LABS (V5 ELITE)
+ * Motor optimizado para DeepSeek con manejo de errores silencioso y preventivo.
  */
 
-const DEEPSEEK_API_KEY = import.meta.env.VITE_DEEPSEEK_API_KEY;
+const getApiKey = () => {
+    const key = import.meta.env.VITE_DEEPSEEK_API_KEY;
+    if (!key || key.includes('your_api_key')) return null;
+    return key.trim();
+};
+
 const DEEPSEEK_URL = "https://api.deepseek.com/chat/completions";
 
-const fetchDeepSeek = async (prompt, systemPrompt = "Eres un productor cinematográfico experto y tutor de cine comunitario.") => {
-    if (!DEEPSEEK_API_KEY) {
-        throw new Error("DeepSeek API Key no encontrada en .env");
+const fetchDeepSeek = async (prompt, systemPrompt) => {
+    const apiKey = getApiKey();
+
+    if (!apiKey) {
+        return "⚠️ ERROR DE CONFIGURACIÓN: La llave de IA no ha sido detectada en Cloudflare. Por favor, verifica las variables de entorno.";
     }
 
     try {
@@ -16,7 +23,7 @@ const fetchDeepSeek = async (prompt, systemPrompt = "Eres un productor cinematog
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${DEEPSEEK_API_KEY}`
+                "Authorization": `Bearer ${apiKey}`
             },
             body: JSON.stringify({
                 model: "deepseek-chat",
@@ -24,47 +31,23 @@ const fetchDeepSeek = async (prompt, systemPrompt = "Eres un productor cinematog
                     { role: "system", content: systemPrompt },
                     { role: "user", content: prompt }
                 ],
-                stream: false
+                temperature: 0.7
             })
         });
 
+        if (!response.ok) {
+            const error = await response.json();
+            return `🔌 FALLA TÉCNICA: El motor DeepSeek está saturado o la llave es inválida. (Error: ${response.status})`;
+        }
+
         const data = await response.json();
         return data.choices[0].message.content;
-    } catch (error) {
-        console.error("DeepSeek Error:", error);
-        throw error;
+    } catch (err) {
+        return "📡 ERROR DE RED: No se pudo contactar con el laboratorio central de IA. Revisa tu conexión.";
     }
 };
 
-// --- SOPORTE AL ECOSISTEMA REBOTE ---
-
-export const generateLogline = async (idea) => {
-    const systemPrompt = `Actúa como IA7, Auditor Forense Audiovisual. Genera un logline (Verdad Extática). 
-    Enfoque: Soberanía Narrativa. Resumen de 1-2 frases con rigor cinematográfico profesional.`;
-    return await fetchDeepSeek(`Genera un logline para esta idea: "${idea}"`, systemPrompt);
-};
-
-export const generateBudget = async (projectDetails) => {
-    const systemPrompt = `Actúa como IA7, Estratega de Producción. Calcula un presupuesto de 'Producción de Combate'. 
-    Optimización de recursos móviles. Entrega: Costo Bajo, Costo Alto y 3 rubros clave.`;
-    return await fetchDeepSeek(`Genera presupuesto para: "${projectDetails}"`, systemPrompt);
-};
-
-export const askCátedra = async (question) => {
-    const systemPrompt = `Eres IA7, Tutor Maestro de Rebote Labs. Respondes sobre Lenguaje Audiovisual, 
-    Técnica Forense, Audio de Resistencia y Ética. Tono académico y empoderador.`;
-    return await fetchDeepSeek(question, systemPrompt);
-};
-
-/**
- * NUEVO: Sinfonía Visual (Asistente de Post-Producción)
- */
-export const assistPostProd = async (projectDescription) => {
-    const systemPrompt = `Actúa como IA7, Especialista en Montaje Estructural. 
-    Analiza la idea del usuario y da consejos de edición:
-    1. Ritmo sugerido.
-    2. Uso de Room Tone.
-    3. Técnica de color forense.
-    4. Estilo de corte (CSI-Style).`;
-    return await fetchDeepSeek(`Aconséjame en la post-producción de este proyecto: "${projectDescription}"`, systemPrompt);
-};
+export const generateLogline = (idea) => fetchDeepSeek(`Crea un logline soberano para: ${idea}`, "Eres IA7, experta en narrativa forense de Petare.");
+export const generateBudget = (idea) => fetchDeepSeek(`Presupuesto de combate para: ${idea}`, "Eres IA7, estratega de producción de bajo costo.");
+export const askCátedra = (p) => fetchDeepSeek(p, "Eres IA7, tutor maestro de cine comunitario.");
+export const assistPostProd = (idea) => fetchDeepSeek(`Consejos de montaje para: ${idea}`, "Eres IA7, especialista en Sinfonía Visual.");

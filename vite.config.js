@@ -7,42 +7,22 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
         name: 'Rebote Labs',
         short_name: 'Rebote',
-        description: 'Plataforma de Producción Audiovisual y Cine',
         theme_color: '#020617',
-        background_color: '#020617',
-        display: 'standalone',
-        scope: '/',
-        start_url: '/',
-        orientation: 'portrait',
         icons: [
-          {
-            src: 'pwa-192x192.svg',
-            sizes: '192x192',
-            type: 'image/svg+xml',
-            purpose: 'any maskable'
-          },
-          {
-            src: 'pwa-512x512.svg',
-            sizes: '512x512',
-            type: 'image/svg+xml',
-            purpose: 'any maskable'
-          }
+          { src: 'logo.svg', sizes: '192x192', type: 'image/svg+xml' },
+          { src: 'logo.svg', sizes: '512x512', type: 'image/svg+xml' }
         ]
       }
     })
   ],
+  server: {
+    host: true
+  },
   build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          utils: ['@supabase/supabase-js', 'react-hot-toast']
-        }
-      }
-    }
+    outDir: 'dist',
+    emptyOutDir: true
   }
 })
