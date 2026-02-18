@@ -4,42 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Acceso Maestro - Rebote Labs</title>
+    <title>Generador QR - Rebote Labs (OFICIAL)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        :root {
-            --bg: #0a0f1e;
-            --card: #161e2e;
-            --orange: #ea580c;
-            --blue: #3b82f6;
-        }
-
         body {
-            background: var(--bg);
+            background: #0a0f1e;
             color: white;
-            font-family: 'Inter', sans-serif;
+            font-family: sans-serif;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px;
         }
 
         .card {
-            background: var(--card);
+            background: #161e2e;
             padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border-radius: 25px;
             text-align: center;
-            max-width: 400px;
-            width: 100%;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        h2 {
-            color: var(--orange);
-            margin-top: 0;
+        h1 {
+            color: #ea580c;
+            margin-bottom: 5px;
+        }
+
+        #link {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: bold;
         }
 
         #qrcode {
@@ -47,91 +47,24 @@
             padding: 15px;
             border-radius: 10px;
             display: inline-block;
-            margin: 20px 0;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            background: #000;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-sizing: border-box;
-            text-align: center;
-        }
-
-        .btn {
-            background: var(--blue);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            text-transform: uppercase;
-        }
-
-        .instructions {
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: #94a3b8;
-            text-align: left;
-        }
-
-        .status {
-            color: #22c55e;
-            font-size: 0.8rem;
-            margin-top: 10px;
         }
     </style>
 </head>
 
 <body>
-
     <div class="card">
-        <h2>Acceso Maestro</h2>
-        <p>Escanea este código para entrar a la App en tu móvil o iPhone.</p>
-
-        <input type="text" id="linkInput" value="https://rebote-labs-petare.pages.dev" oninput="generateQR()">
-
+        <h1>REBOTE LABS</h1>
+        <p>Escanea para instalar en tu móvil</p>
+        <input type="text" id="link" value="https://rebote-labs.pages.dev" oninput="updateQR()">
         <div id="qrcode"></div>
-
-        <button class="btn" onclick="downloadQR()">Descargar Imagen QR</button>
-
-        <div class="instructions">
-            <strong>📲 Instalación:</strong><br>
-            1. Escanea con la cámara.<br>
-            2. En iPhone: Comparte -> "Añadir a pantalla de inicio".<br>
-            3. En Android: Menú -> "Instalar aplicación".
-        </div>
+        <p style="margin-top:20px; font-size: 0.8rem; color: #94a3b8;">Sugerencia: "Añadir a pantalla de inicio"</p>
     </div>
-
     <script>
         let qrcode = new QRCode(document.getElementById("qrcode"), {
-            text: document.getElementById("linkInput").value,
-            width: 200,
-            height: 200,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
+            text: "https://rebote-labs.pages.dev",
+            width: 200, height: 200
         });
-
-        function generateQR() {
-            let val = document.getElementById("linkInput").value;
-            qrcode.clear();
-            qrcode.makeCode(val);
-        }
-
-        function downloadQR() {
-            const img = document.querySelector('#qrcode img');
-            const link = document.createElement('a');
-            link.download = 'QR_REBOTE_LABS.png';
-            link.href = img.src;
-            link.click();
-        }
+        function updateQR() { qrcode.clear(); qrcode.makeCode(document.getElementById("link").value); }
     </script>
 </body>
 

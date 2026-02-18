@@ -3,78 +3,78 @@ import { generateLogline, generateBudget, askCátedra, assistPostProd } from '..
 import toast from 'react-hot-toast'
 
 export function AIDashboard({ onLogout }) {
-    const [idea, setIdea] = useState('')
+    const [prompt, setPrompt] = useState('')
     const [result, setResult] = useState('')
     const [loading, setLoading] = useState(false)
-    const [mode, setMode] = useState('genesis')
+    const [activeTab, setActiveTab] = useState('genesis')
 
-    const handleGenerate = async () => {
-        if (!idea && mode !== 'catedra') return
+    const handleAIGenerate = async () => {
+        if (!prompt && activeTab !== 'catedra') return
         setLoading(true)
         try {
-            let output = ''
-            if (mode === 'genesis') output = await generateLogline(idea)
-            else if (mode === 'ingenieria') output = await generateBudget(idea)
-            else if (mode === 'sinfonia') output = await assistPostProd(idea)
-            else if (mode === 'catedra') output = await askCátedra(idea)
-            setResult(output)
+            let res = ''
+            if (activeTab === 'genesis') res = await generateLogline(prompt)
+            else if (activeTab === 'ingenieria') res = await generateBudget(prompt)
+            else if (activeTab === 'sinfonia') res = await assistPostProd(prompt)
+            else if (activeTab === 'catedra') res = await askCátedra(prompt)
+            setResult(res)
         } catch (e) {
-            toast.error("Falla de red")
+            toast.error("Motor desconectado")
         }
         setLoading(false)
     }
 
-    const menuItems = [
-        { id: 'genesis', icon: '💡', title: 'Génesis Creativa', sub: 'Loglines e Ideas' },
-        { id: 'ingenieria', icon: '🎬', title: 'Puesta en Escena', sub: 'Presupuesto y Plan' },
-        { id: 'sinfonia', icon: '✨', title: 'Alquimia Visual', sub: 'Edición y Post' },
-        { id: 'catedra', icon: '📖', title: 'Cátedra Rebote', sub: 'Lenguaje y Teoría' }
+    const modules = [
+        { id: 'genesis', icon: '💡', name: 'Génesis Creativa', sub: 'Loglines e Ideas' },
+        { id: 'ingenieria', icon: '🎬', name: 'Puesta en Escena', sub: 'Presupuesto y Plan' },
+        { id: 'sinfonia', icon: '✨', name: 'Alquimia Visual', sub: 'Edición y Post' },
+        { id: 'catedra', icon: '📖', name: 'Cátedra Rebote', sub: 'Lenguaje y Teoría' }
     ]
 
     return (
-        <div className="dashboard-card fade-in">
-            <div className="dashboard-header-ref">
-                <div className="header-left">
+        <div className="dashboard-container anim-up">
+            <div className="dash-head">
+                <div className="dash-title">
                     <h2>Estudio<br />Virtual Pro</h2>
-                    <span className="role-badge">Director / Productor</span>
+                    <span className="badge-director">Director / Productor</span>
                 </div>
-                <button className="btn-logout-ref" onClick={onLogout}>Finalizar<br />Sesión</button>
+                <button className="btn-close" onClick={onLogout}>Finalizar<br />Sesión</button>
             </div>
 
-            <nav className="production-list">
-                {menuItems.map(item => (
+            <nav className="module-list">
+                {modules.map(m => (
                     <button
-                        key={item.id}
-                        className={`nav-row ${mode === item.id ? 'active' : ''}`}
-                        onClick={() => { setMode(item.id); setResult(''); setIdea(''); }}
+                        key={m.id}
+                        className={`module-row ${activeTab === m.id ? 'selected' : ''}`}
+                        onClick={() => { setActiveTab(m.id); setResult(''); setPrompt(''); }}
                     >
-                        <span className="row-icon">{item.icon}</span>
-                        <div className="row-text">
-                            <strong>{item.title}</strong>
-                            <small>{item.sub}</small>
+                        <span className="row-icon-large">{m.icon}</span>
+                        <div className="row-info">
+                            <strong>{m.name}</strong>
+                            <span>{m.sub}</span>
                         </div>
                     </button>
                 ))}
             </nav>
 
-            <div className="workstation-ref">
+            <div className="work-zone">
                 <textarea
-                    className="workspace-input"
-                    placeholder="Describe tu visión aquí..."
-                    value={idea}
-                    onChange={(e) => setIdea(e.target.value)}
+                    className="input-prompt"
+                    placeholder="Describe tu visión o idea técnica aquí..."
+                    value={prompt}
+                    onChange={(e) => setPrompt(e.target.value)}
                 />
 
                 <button
-                    className="btn-generate-ref"
-                    onClick={handleGenerate}
-                    disabled={loading || !idea}
+                    className="btn-activate"
+                    onClick={handleAIGenerate}
+                    disabled={loading || (!prompt && activeTab !== 'catedra')}
                 >
-                    {loading ? 'Procesando...' : 'Generar Resultado'}
+                    {loading ? 'Procesando Master...' : 'Generar Resultado'}
                 </button>
 
                 {result && (
-                    <div className="result-panel fade-in">
+                    <div className="ai-output anim-up">
                         {result}
                     </div>
                 )}

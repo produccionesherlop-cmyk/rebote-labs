@@ -1,11 +1,9 @@
 export function Header() {
     return (
-        <header className="fade-in">
-            <span className="phase-badge">Fase Beta • Acceso Temprano</span>
-            <div className="main-logo-container">
-                <img src="/logo.svg" alt="Rebote Labs Logo" className="hero-logo" />
-            </div>
-            <p className="hero-description-ref">
+        <header className="main-header anim-up">
+            <span className="beta-tag">Fase Beta • Acceso Temprano</span>
+            <img src="/logo.svg" alt="Rebote Labs" className="logo-hero" />
+            <p className="description-hero">
                 La primera plataforma dedicada exclusivamente a la producción audiovisual y cinematográfica.
             </p>
         </header>
