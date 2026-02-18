@@ -4,67 +4,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador QR - Rebote Labs (OFICIAL)</title>
+    <title>Soberanía Digital - Rebote Labs QR</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
+        :root {
+            --rebote-navy: #0a0f1e;
+            --rebote-orange: #ea580c;
+            --rebote-blue: #3b82f6;
+            --rebote-card: #161e2e;
+        }
+
         body {
-            background: #0a0f1e;
+            background-color: var(--rebote-navy);
             color: white;
-            font-family: sans-serif;
+            font-family: 'Inter', sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             margin: 0;
+            padding: 20px;
         }
 
-        .card {
-            background: #161e2e;
-            padding: 30px;
-            border-radius: 25px;
+        .container {
+            background: var(--rebote-card);
+            padding: 40px;
+            border-radius: 30px;
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            max-width: 400px;
+            width: 100%;
         }
 
         h1 {
-            color: #ea580c;
-            margin-bottom: 5px;
+            color: var(--rebote-orange);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
         }
 
-        #link {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            margin: 15px 0;
-            text-align: center;
+        p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        #qrcode-box {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            display: inline-block;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .url-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 10px;
+            font-family: monospace;
+            color: var(--rebote-blue);
+            margin-bottom: 25px;
+            word-break: break-all;
             font-weight: bold;
         }
 
-        #qrcode {
-            background: white;
-            padding: 15px;
+        .btn-download {
+            background: var(--rebote-blue);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        .btn-download:hover {
+            transform: scale(1.03);
+            background: #2563eb;
+        }
+
+        .device-info {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            font-size: 0.8rem;
+            text-align: left;
+        }
+
+        .device-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 10px;
             border-radius: 10px;
-            display: inline-block;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .device-card strong {
+            color: var(--rebote-blue);
         }
     </style>
 </head>
 
 <body>
-    <div class="card">
+
+    <div class="container">
         <h1>REBOTE LABS</h1>
-        <p>Escanea para instalar en tu móvil</p>
-        <input type="text" id="link" value="https://rebote-labs.pages.dev" oninput="updateQR()">
-        <div id="qrcode"></div>
-        <p style="margin-top:20px; font-size: 0.8rem; color: #94a3b8;">Sugerencia: "Añadir a pantalla de inicio"</p>
+        <p>Ecosistema Maestro de Producción</p>
+
+        <div id="qrcode-box">
+            <div id="qrcode"></div>
+        </div>
+
+        <div class="url-box" id="url-text">https://rebote-labs.pages.dev</div>
+
+        <button class="btn-download" onclick="downloadQR()">Guardar Acceso QR</button>
+
+        <div class="device-info">
+            <div class="device-card">
+                <strong>🍎 iPhone/iOS</strong><br>
+                1. Compartir<br>
+                2. "Añadir a inicio"
+            </div>
+            <div class="device-card">
+                <strong>🤖 Android/Web</strong><br>
+                1. Opciones (⋮)<br>
+                2. "Instalar APP"
+            </div>
+        </div>
     </div>
-    <script>
+
+    <script id="qr-script">
+        const FINAL_URL = "https://rebote-labs.pages.dev";
+
         let qrcode = new QRCode(document.getElementById("qrcode"), {
-            text: "https://rebote-labs.pages.dev",
-            width: 200, height: 200
+            text: FINAL_URL,
+            width: 220,
+            height: 220,
+            colorDark: "#0a0f1e",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
         });
-        function updateQR() { qrcode.clear(); qrcode.makeCode(document.getElementById("link").value); }
+
+        function downloadQR() {
+            const img = document.querySelector('#qrcode img');
+            const link = document.createElement('a');
+            link.download = 'ACCESO_REBOTE_LABS.png';
+            link.href = img.src;
+            link.click();
+        }
     </script>
 </body>
 

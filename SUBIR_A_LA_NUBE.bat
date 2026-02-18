@@ -1,56 +1,56 @@
 @echo off
 setlocal
-title REBOTE LABS - CONTROLADOR MAESTRO V7
+title OPTIMIZADOR MASTER - REBOTE LABS V8
 color 0B
 
 echo ============================================================
-echo           REBOTE LABS - SOBERANIA TECNOLOGICA V7
+echo           REBOTE LABS - OPTIMIZACION DE ACERO V8
 echo ============================================================
 echo.
-echo [1/4] AUDITORIA DE ARCHIVOS...
-if not exist "package.json" ( echo [ERROR] No estas en la carpeta raiz. & pause & exit )
-if not exist "src" ( echo [ERROR] Falta carpeta src. & pause & exit )
+echo [1/3] Limpiando y Asegurando Identidad...
+git config user.email "produccionesherlop@gmail.com"
+git config user.name "Eduardo Hernandez"
 
 echo.
-echo [2/4] SINCRONIZACION DE IDENTIDAD VISUAL...
+echo [2/3] Empaquetando Código Master (IA + CSS + QR)...
 git add .
-git commit -m "Arquitectura Master V7: Sincronizacion Total PWA + DeepSeek + Cloudflare" 2>nul
+git commit -m "Soberania Total V8: QR Elite, Motor Hibrido y Link Oficial" 2>nul
 
 echo.
-echo [3/4] CONEXION CON GITHUB (PRODUCCIONES HERLOP)...
+echo [3/3] Sincronizando con la Nube...
+:: Intentamos con el repositorio que indico el usuario
 git remote remove origin 2>nul
 git remote add origin https://github.com/produccionesherlop/rebote-labs.git
-git branch -M main
-
-echo.
-echo [4/4] DESPLIEGUE A LA NUBE...
 git push origin main --force
 
 if %errorlevel% neq 0 (
     echo.
-    echo [!] FALLA DE CONEXION. Intentando con Token Manual...
-    set /p GITHUB_TOKEN="Pega tu Token (ghp_...) para forzar el acceso: "
-    git remote set-url origin https://produccionesherlop:%GITHUB_TOKEN%@github.com/produccionesherlop/rebote-labs.git
+    echo [!] Reintentando con Repositorio de Respaldo...
+    git remote set-url origin https://github.com/produccionesherlop-cmyk/rebote-labs.git
     git push origin main --force
+)
+
+if %errorlevel% neq 0 (
+    echo.
+    echo [ERROR] No se pudo conectar con GitHub. 
+    echo 1. Verifica que tu internet sea estable.
+    echo 2. Pega tu Token si GitHub lo solicita.
+    pause
+    exit
 )
 
 echo.
 echo ============================================================
-echo           !!! PUESTA EN MARCHA EXITOSA !!!
+echo           !!! OPTIMIZACIÓN EXITOSA !!!
 echo ============================================================
 echo.
-echo AJUSTES FINALES EN CLOUDFLARE PAGES (OBLIGATORIO):
+echo CONFIGURACIÓN FINAL PARA QUE EL LINK SIRVA:
 echo ------------------------------------------------------------
-echo 1. Proyecto: rebote-labs (Oficial)
-echo 2. Marco (Framework): Vite
-echo 3. Comando Build: npm run build
+echo 1. Link Oficial: https://rebote-labs.pages.dev
+echo 2. En Cloudflare: ASEGURATE que el nombre sea "rebote-labs"
+echo 3. Raiz (Root): DEJAR VACIO 👁️
 echo 4. Carpeta Salida: dist
-echo 5. Directorio Raiz: [DEJAR TOTALMENTE VACIO] 👁️
 echo.
-echo VARIABLES EN CLOUDFLARE:
-echo VITE_DEEPSEEK_API_KEY = sk-b7672f1a3af2440e8c94ae8779a384b2
-echo ------------------------------------------------------------
-echo.
-echo Tu App esta viva en: https://rebote-labs.pages.dev
-echo.
+echo Ya puedes usar GENERAR_QR.html en tu PC para iOS/Android.
+echo ============================================================
 pause
