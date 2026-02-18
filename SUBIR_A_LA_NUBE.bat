@@ -1,48 +1,34 @@
 @echo off
 setlocal
-title ASISTENTE DE DESPLIEGUE REBOTE V5
-color 0B
+title REPARADOR MAESTRO - REBOTE LABS
+color 0E
 
 echo ============================================================
-echo           REBOTE LABS - ASISTENTE DE EXPERTO
+echo           REBOTE LABS - CORRECCIÓN DE ENLACES
 echo ============================================================
 echo.
-echo [1/3] Sincronizando cambios locales...
+echo [1/3] Sincronizando código con la nueva identidad visual...
 git add .
-git commit -m "Optimizacion Elite V5: Identidad Visual y Motor IA" 2>nul
-
-echo.
-echo [2/3] Subiendo a GitHub...
+git commit -m "Reparacion Maestra: Enlaces y QR sincronizados con rebote-labs-petare" 2>nul
 git push origin main --force
 
-if %errorlevel% neq 0 (
-    echo.
-    echo [!] ERROR: No se pudo subir el codigo. 
-    echo Verifica tu Internet o el Token.
-    pause
-    exit
-)
-
 echo.
 echo ============================================================
-echo           !!! CODIGO SUBIDO EXITOSAMENTE !!!
+echo           !!! EL LINK 'rebote-labs' NO EXISTE !!!
 echo ============================================================
 echo.
-echo [3/3] CONFIGURACION CRITICA PARA CLOUDFLARE:
+echo El nombre 'rebote-labs' ya estaba ocupado en Cloudflare.
+echo TU ENLACE REAL Y ÚNICO ES: 
+echo.
+echo 👉 https://rebote-labs-petare.pages.dev
+echo.
 echo ------------------------------------------------------------
-echo Copia estos valores EXACTAMENTE en tu panel de Cloudflare:
-echo.
-echo 1. Directorio Raiz (Root Directory):      [DEJAR VACIO]
-echo 2. Comando de construccion (Build):        npm run build
-echo 3. Carpeta de salida (Output):             dist
-echo 4. Comando de implementacion (Deploy):     [DEJAR VACIO]
-echo.
-echo VARIABLES DE ENTORNO (Environment Variables):
-echo Nombre: VITE_DEEPSEEK_API_KEY
-echo Valor:  sk-b7672f1a3af2440e8c94ae8779a384b2
+echo [PASOS PARA UN LINK PERFECTO]:
+echo 1. Abre el archivo GENERAR_QR.html en tu PC.
+echo 2. Escanea el código con tu móvil (Ya está actualizado).
+echo 3. Si vas a Cloudflare, asegúrate que el nombre del 
+echo    proyecto sea: rebote-labs-petare
 echo ------------------------------------------------------------
 echo.
-echo Tu link estara listo en 1 minuto en:
-echo https://rebote-labs-petare.pages.dev
-echo.
-pause
+echo Presiona una tecla para terminar el peritaje.
+pause >nul

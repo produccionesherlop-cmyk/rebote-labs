@@ -4,169 +4,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REBOTE LABS | Generador de Acceso Maestro</title>
-    <!-- Usamos una libreria mas moderna y compatible -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <title>Generador de Acceso Maestro - Rebote Labs</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         :root {
-            --bg: #020617;
-            --accent: #ea580c;
-            --text: #f8fafc;
-            --glass: rgba(255, 255, 255, 0.05);
+            --bg: #0a0f1e;
+            --card: #161e2e;
+            --orange: #ea580c;
+            --blue: #3b82f6;
         }
 
         body {
             background: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', system-ui, sans-serif;
-            margin: 0;
+            color: white;
+            font-family: 'Inter', sans-serif;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            margin: 0;
             padding: 20px;
         }
 
         .card {
-            background: var(--glass);
-            padding: 40px;
-            border-radius: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        .logo {
-            margin-bottom: 30px;
-        }
-
-        .logo h1 {
-            font-size: 2.5rem;
-            font-weight: 900;
-            letter-spacing: 10px;
-            margin: 0;
-            text-indent: 10px;
-        }
-
-        .logo span {
-            color: var(--accent);
-            letter-spacing: 5px;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-        }
-
-        #canvas-container {
-            background: white;
+            background: var(--card);
             padding: 30px;
-            border-radius: 30px;
-            display: inline-block;
-            margin: 30px 0;
-            box-shadow: 0 0 40px rgba(234, 88, 12, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
         }
 
-        canvas {
-            display: block;
-            width: 240px !important;
-            height: 240px !important;
+        h2 {
+            color: var(--orange);
+            margin-top: 0;
+        }
+
+        #qrcode {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            display: inline-block;
+            margin: 20px 0;
         }
 
         input {
             width: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid #333;
+            padding: 12px;
+            background: #000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
-            padding: 15px;
-            border-radius: 15px;
-            text-align: center;
-            font-size: 1rem;
+            border-radius: 8px;
             margin-bottom: 20px;
+            box-sizing: border-box;
+            text-align: center;
         }
 
-        button {
-            background: white;
-            color: black;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-weight: 900;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: var(--accent);
+        .btn {
+            background: var(--blue);
             color: white;
-            transform: scale(1.05);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            text-transform: uppercase;
         }
 
-        .help {
-            margin-top: 30px;
-            font-size: 0.85rem;
-            opacity: 0.6;
-            line-height: 1.6;
+        .instructions {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            text-align: left;
         }
 
-        .link-direct {
-            color: var(--accent);
-            text-decoration: none;
-            display: block;
+        .status {
+            color: #22c55e;
+            font-size: 0.8rem;
             margin-top: 10px;
-            font-weight: 700;
         }
     </style>
 </head>
 
 <body>
+
     <div class="card">
-        <div class="logo">
-            <h1>REBOTE</h1>
-            <span>LABS • ECOSISTEMA</span>
-        </div>
+        <h2>Acceso Maestro</h2>
+        <p>Escanea este código para entrar a la App en tu móvil o iPhone.</p>
 
-        <div id="canvas-container">
-            <canvas id="qrcode-canvas"></canvas>
-        </div>
+        <input type="text" id="linkInput" value="https://rebote-labs-petare.pages.dev" oninput="generateQR()">
 
-        <div class="controls">
-            <input type="text" id="url" placeholder="URL de la App" value="https://rebote-labs-petare.pages.dev">
-            <button onclick="updateQR()">Generar Nuevo Acceso</button>
-            <a id="download" href="#" class="link-direct" style="display:none">Descargar imagen QR</a>
-        </div>
+        <div id="qrcode"></div>
 
-        <div class="help">
-            Escanea este código con tu iPhone o Android.<br>
-            <strong>iOS:</strong> Añadir a pantalla de inicio.<br>
-            <strong>Android:</strong> Instalar aplicación.
+        <button class="btn" onclick="downloadQR()">Descargar Imagen QR</button>
+
+        <div class="instructions">
+            <strong>📲 Instalación:</strong><br>
+            1. Escanea con la cámara.<br>
+            2. En iPhone: Comparte -> "Añadir a pantalla de inicio".<br>
+            3. En Android: Menú -> "Instalar aplicación".
         </div>
     </div>
 
     <script>
-        const canvas = document.getElementById('qrcode-canvas');
-        const urlInput = document.getElementById('url');
+        let qrcode = new QRCode(document.getElementById("qrcode"), {
+            text: document.getElementById("linkInput").value,
+            width: 200,
+            height: 200,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
 
-        function updateQR() {
-            const url = urlInput.value || 'https://rebote-labs.pages.dev';
-            QRCode.toCanvas(canvas, url, {
-                width: 240,
-                margin: 0,
-                color: {
-                    dark: '#020617',
-                    light: '#ffffff'
-                }
-            }, function (error) {
-                if (error) console.error(error);
-                console.log('QR Generado!');
-            });
+        function generateQR() {
+            let val = document.getElementById("linkInput").value;
+            qrcode.clear();
+            qrcode.makeCode(val);
         }
 
-        // Generar inicial
-        setTimeout(updateQR, 500);
+        function downloadQR() {
+            const img = document.querySelector('#qrcode img');
+            const link = document.createElement('a');
+            link.download = 'QR_REBOTE_LABS.png';
+            link.href = img.src;
+            link.click();
+        }
     </script>
 </body>
 
